@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { GameService } from '../game.service';
 import { StackService } from './stack.service';
 
 describe('StackService', () => {
@@ -6,7 +7,7 @@ describe('StackService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [StackService],
+      providers: [StackService, GameService],
     }).compile();
 
     service = module.get<StackService>(StackService);
