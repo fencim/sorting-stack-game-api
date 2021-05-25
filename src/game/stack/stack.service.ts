@@ -19,9 +19,9 @@ export class StackService {
         let stacks = this.gameService.findOne(gameId).stacks;
         return stacks.push(stack || []);
     }
-    update(gameid: number, id: number, stack: number[]): number[][] {
+    update(gameid: number, id: number, updated: number[][]): number[][] {
         let stacks = this.gameService.findOne(gameid).stacks;
-        stacks.splice(id, 1, stack || []);
+        stacks.splice(id, stacks.length, ...updated);
         return stacks;
     }
 }
