@@ -1,16 +1,25 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiBody, ApiOperation } from '@nestjs/swagger';
 import { Game } from 'src/interfaces/game.interface';
 import { GameService } from './game.service';
 
 @Controller('game')
 export class GameController {
     constructor(private readonly gameService: GameService) { }
+    @ApiBody({
+        schema: {
+            type: "object",
+            required: ['level'],
+            properties: {
+                level: {type: 'number'}
+            }
+        }
+    })
     @ApiOperation({
         summary: "Create new Game"
     })
     @Post()
-    async create(@Body() newGame: Game) {
+    async create(@Body() newGame: Game):Promise<Game> {
         return this.gameService.create(newGame);
     }
     @ApiOperation({
@@ -25,6 +34,8 @@ export class GameController {
     })
     @Get()
     findAll():Game[] {
-        return this.gameService.findAll();
+        return this.gameService.findAll().map(g => {
+            return { ...g, players: undefined, stacks: undefined }
+        });
     }
 }
